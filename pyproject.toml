@@ -1,21 +1,65 @@
-[tool.black]
-line_length = 88
-target-version = ['py38']
-exclude = '''
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.mypy_cache
-    | \.tox
-    | \.venv
-    | __pycache__
-    | _build
-    | build
-    | dist
-    | docs
-    | venv
-    | node_modules
-  )/
-)
-'''
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "django-querystring-tag"
+authors = [{name = "Andy Babic", email = "andyjbabic@gmail.com"}]
+description = "A single, powerful template tag for modifying and rendering safe, suitably-encoded querystrings. It's the clean and simple way to create pagination links, filter toggles, and other state-preserving links."
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
+]
+dynamic = ["version"]
+requires-python = ">=3.11"
+dependencies = [
+    "Django>=4.2",
+]
+[project.optional-dependencies]
+lint = [
+  "ruff>=0.5",
+]
+test = [
+    "dj-database-url==2.1.0",
+    "pytest-cov==2.12.1",
+    "pytest-mock==3.12.0",
+    "pytest-django>=4.5.2",
+    "pytest>=7.4.2",
+]
+
+[project.urls]
+Home = "https://github.com/ababic/django-querystring-tag"
+
+[tool.flit.module]
+name = "querystring_tag"
+
+[tool.flit.sdist]
+exclude = [
+    "querystring_tag/testapp",
+    "querystring_tag/templatetags/tests.py",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "testapp.settings"
+pythonpath = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "--tb=short"
+log_level = "INFO"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+lint.select = ["F", "E", "C90", "I", "B", "DJ", "RUF", "TRY", "C4", "TCH005", "TCH004"]
+lint.ignore = ["TRY003", "E501", "RUF012"]
